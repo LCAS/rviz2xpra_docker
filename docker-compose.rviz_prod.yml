@@ -1,8 +1,8 @@
 # ###########################################################################
-# Docker Compose XPRA Display Service with RViz2
+# Docker Compose XPRA Overlay Template for ROS Projects
 #
-# Standalone service for browser-based RViz2 visualization using XPRA HTML5.
-# Provides cross-platform access to RViz without X11 or VNC client installation.
+# Template file for adding browser-based RViz visualization via XPRA HTML5
+# to existing ROS Docker Compose projects.
 #
 # @author      James R. Heselden (github: iranaphor)
 # @maintainer  James R. Heselden (github: iranaphor)
@@ -15,23 +15,13 @@
 ###########################################################################
 
 services:
-#  xpra:
-#    build: ./rviz-xpra
-#    ports:
-#      - "14500:14500"
-#    volumes:
-#      - rviz_config:/root/.rviz2
-#    environment:
-#      - ROS_DOMAIN_ID=0
-#
   rviz-xpra:
     build: ./rviz-xpra
     ports:
       - "14500:14500"
     network_mode: host  # Change to match your prod service network mode
     volumes:
-      - rviz_config:/root/.rviz2
-      - fleet_rviz_config:/fleet_config:ro
+      - prod_rviz_config:/prod_rviz_config:ro
     environment:
       - ROS_DOMAIN_ID=0  # Change to match your ROS_DOMAIN_ID
     command: >
@@ -39,7 +29,7 @@ services:
       exec xpra start :100
       --bind-tcp=0.0.0.0:14500
       --html=on
-      --start-child='rviz2 -d /fleet_config/your_config.rviz'
+      --start-child='rviz2 -d /prod_rviz_config/your_config.rviz'
       --exit-with-children
       --daemon=no
       --pulseaudio=no
@@ -47,5 +37,14 @@ services:
       --bell=no
       --mdns=no"
 
+  your_ros_service:  # CHANGE THIS to your actual service name
+    container_name:  # Remove if your service doesn't use container_name
+    volumes:
+      - prod_rviz_config:/path/to/your/rviz/config  # CHANGE THIS to your RViz config directory
+    environment:
+      - ENABLE_RVIZ=false  # Optional: disable built-in RViz if your service has one
+
 volumes:
   rviz_config:
+  fleet_rviz_config:
+  colcon_cache:  # Add any other volumes your prod service uses

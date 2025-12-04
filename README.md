@@ -4,7 +4,7 @@ Browser-based RViz2 using XPRA HTML5. Works on Windows/macOS/Linux without X11 o
 ## Quick Test
 
 ```bash
-docker compose -f docker-compose.xpra.yml up --build
+docker compose -f docker-compose.run-without-config.yml up
 ```
 
 Open **http://localhost:14500/**

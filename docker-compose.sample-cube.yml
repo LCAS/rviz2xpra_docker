@@ -14,16 +14,24 @@
 ###########################################################################
 
 services:
-  rviz:
+  marker_publisher:
     image: osrf/ros:humble-desktop-full
-    network_mode: "host"
+    container_name: ros2-random-marker
+    network_mode: bridge
     environment:
-      DISPLAY: "localhost:100"
-      XAUTHORITY: "/dev/null"
-      QT_X11_NO_MITSHM: "1"
-      LIBGL_ALWAYS_SOFTWARE: "1"
-      OGRE_RTT_MODE: "Copy"
-    command: ["bash", "-c", "sleep 5 && rviz2; docker kill vnctest-xpra-1 || true"]
+      - ROS_DOMAIN_ID=1
+    command:
+      - bash
+      - -lc
+      - |
+          set -eu
+          echo "publisher: beginning loop"
+          while true; do
+            r="$(python3 -c 'import random; print(random.random())')"
+            g="$(python3 -c 'import random; print(random.random())')"
+            b="$(python3 -c 'import random; print(random.random())')"
+            ros2 topic pub -1 /visualization_marker visualization_msgs/msg/Marker "{header: {frame_id: map}, ns: random, id: 1, type: 1, pose: {position: {z: 0.5}}, scale: {x: 0.5, y: 0.5, z: 0.5}, color: {r: $$r, g: $$g, b: $$b, a: 1.0}}"
 
-volumes:
-  x11_socket:
+            sleep 0.5
+          done
+
