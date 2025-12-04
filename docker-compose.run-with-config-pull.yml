@@ -30,7 +30,7 @@ services:
       exec xpra start :100
       --bind-tcp=0.0.0.0:14500
       --html=on
-      --start-child='rviz2 -d /root/.rviz/default.rviz' #We specify the file in our new .rviz to launch
+      --start-child='rviz2 -d /root/.rviz/default.rviz'
       --exit-with-children
       --daemon=no
       --pulseaudio=no
