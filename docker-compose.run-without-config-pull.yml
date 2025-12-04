@@ -16,13 +16,11 @@
 
 services:
   rviz2xpra:
-    image: uk.ac.lincoln.lcas/lcas/rviz2xpra_docker:latest
+    image: lcas.lincoln.ac.uk/lcas/rviz2xpra_docker:latest
     pull_policy: always
     ports:
       - "14500:14500"
     network_mode: host  # Change to match your prod service network mode
-    volumes:
-      - rviz_config:/root/.rviz:ro # We overrite our .rviz with a mounted volume from the other service
     environment:
       - ROS_DOMAIN_ID=1  # Change to match your ROS_DOMAIN_ID
     command: >
