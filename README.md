@@ -3,11 +3,15 @@ Browser-based RViz2 using XPRA HTML5. Works on Windows/macOS/Linux without X11 o
 
 ## Quick Test
 
+Run locally:
 ```bash
 docker compose -f docker-compose.run-without-config.yml up
 ```
 
-Running with workflow.
+Running post-workflow:
+```bash
+docker compose -f docker-compose.run-without-config-pull.yml up
+```
 
 Open **http://localhost:14500/**
 
