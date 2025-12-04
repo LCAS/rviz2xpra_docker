@@ -1,0 +1,50 @@
+# ###########################################################################
+# Docker Compose XPRA Overlay Template for ROS Projects
+#
+# Template file for adding browser-based RViz visualization via XPRA HTML5
+# to existing ROS Docker Compose projects.
+#
+# @author      James R. Heselden (github: iranaphor)
+# @maintainer  James R. Heselden (github: iranaphor)
+# @datecreated 30th November 2025
+# @credits     Code structure and implementation were developed by the
+#              author with assistance from Anthropic's Claude Sonnet 4.5
+#              model via GitHub Copilot, used under the author's direction
+#              and supervision.
+#
+###########################################################################
+
+services:
+  rviz-xpra:
+    build: ./rviz-xpra
+    ports:
+      - "14500:14500"
+    network_mode: host  # Change to match your prod service network mode
+    volumes:
+      - rviz_config:/root/.rviz:ro # We overrite our .rviz with a mounted volume from the other service
+    environment:
+      - ROS_DOMAIN_ID=1  # Change to match your ROS_DOMAIN_ID
+    command: >
+      bash -c "source /opt/ros/humble/setup.bash &&
+      exec xpra start :100
+      --bind-tcp=0.0.0.0:14500
+      --html=on
+      --start-child='rviz2 -d /root/.rviz/default.rviz' #We specify the file in our new .rviz to launch
+      --exit-with-children
+      --daemon=no
+      --pulseaudio=no
+      --notifications=no
+      --bell=no
+      --mdns=no"
+
+  marker_publisher:
+    extends:
+      file: docker-compose.sample-cube.yml
+      service: marker_publisher
+    volumes:
+      - rviz_config:/home/ros/.rviz
+    environment:
+      - ROS_DOMAIN_ID=1
+
+volumes:
+  rviz_config:
