@@ -70,7 +70,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                 context: .
-                file: ./rviz-xpra/Dockerfile
+                file: ./rviz2xpra/Dockerfile
                 platforms: linux/amd64
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
