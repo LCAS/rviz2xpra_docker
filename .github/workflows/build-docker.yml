@@ -71,13 +71,13 @@ jobs:
               with:
                 context: ./rviz2xpra
                 file: ./rviz2xpra/Dockerfile
-                platforms: linux/amd64
+                platforms: linux/amd64, linux/arm64
                 cache-from: type=gha
                 cache-to: type=gha,mode=max
                 push: ${{ github.event_name != 'pull_request' }}
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: ${{ steps.meta.outputs.labels }}
                 build-args: |
-                  BASE_IMAGE=osrf/ros:humble-desktop-full
+                  BASE_IMAGE=ros:humble
                   GIT_REPO_VERSION=${{ github.ref_name }}
                   GIT_REPO_VERSION_DATE=${{ github.event.head_commit.timestamp }}

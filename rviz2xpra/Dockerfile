@@ -14,7 +14,13 @@
 #
 ###########################################################################
 
-FROM osrf/ros:humble-desktop-full
+FROM ros:humble
+
+# Installl rviz2
+RUN apt-get update && \ 
+    apt-get install -y \
+    ros-humble-rviz2 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install XPRA and dependencies
 ENV DEBIAN_FRONTEND=noninteractive
