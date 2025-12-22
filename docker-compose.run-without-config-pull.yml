@@ -20,7 +20,8 @@ services:
     pull_policy: always
     ports:
       - "14500:14500"
-    network_mode: host  # Change to match your prod service network mode
+    network_mode: bridge  # Change to match your prod service network mode
+    ipc: "host"
     environment:
       - ROS_DOMAIN_ID=1  # Change to match your ROS_DOMAIN_ID
     command: >

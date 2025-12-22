@@ -18,6 +18,7 @@ services:
     image: osrf/ros:humble-desktop-full
     container_name: ros2-random-marker
     network_mode: bridge
+    ipc: "host"
     environment:
       - ROS_DOMAIN_ID=1
     command:

@@ -19,7 +19,8 @@ services:
     build: ./rviz2xpra
     ports:
       - "14500:14500"
-    network_mode: host  # Change to match your prod service network mode
+    network_mode: bridge  # Change to match your prod service network mode
+    ipc: "host"
     volumes:
       - rviz_config:/root/.rviz:ro # We overrite our .rviz with a mounted volume from the other service
     environment:
